@@ -56,11 +56,11 @@ def clip_raster_by_tile(input_raster, tile_shapefile, output_folder):
 
 if __name__ == "__main__":
     # Set input parameters
-    input_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Downloaded_Tif_image\Washington\North_Cove\2020\NorthCove20_Clipped.tif"
-    #input_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_Eelgrass_1_0.tif"
+    #input_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Downloaded_Tif_image\Washington\North_Cove\2020\NorthCove20_Clipped.tif"
+    input_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs20\NorthCov20_tiles_20_index_001.tif"
 
     tile_shapefile = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NorthCov20_tiles_100.shp"
-    output_folder = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs20\Clipped_0220\Drone"
+    output_folder = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs20\Clipped_0220"
 
     print("Parameters read. Start processing... ")
     # Call the function to clip raster by each tile
