@@ -4,23 +4,23 @@ import os
 
 import arcpy
 from arcpy.sa import *
-import csv
-import sys
 import os
 from os import path
+import time
+
 # Check Spatial Analyst extention
 arcpy.CheckOutExtension("Spatial")
 #Define input and output parameters
 arcpy.env.overwriteOutput = True
 
-def clip_raster_by_tile(input_raster, tile_shapefile, output_folder):
+def clip_raster_by_tile(input_raster, tile_shapefile, DateSource ,output_folder):
     # Check out Spatial Analyst extension
     arcpy.CheckOutExtension("Spatial")
 
     # Create output folders if they don't exist
-    output_drone_image = os.path.join(output_folder, "drone_image")
-    if not os.path.exists(output_drone_image):
-        os.makedirs(output_drone_image)
+    output_tif = os.path.join(output_folder, "tif")
+    if not os.path.exists(output_tif):
+        os.makedirs(output_tif)
 
     output_png = os.path.join(output_folder, "png")
     if not os.path.exists(output_png):
@@ -38,14 +38,14 @@ def clip_raster_by_tile(input_raster, tile_shapefile, output_folder):
             mask = arcpy.sa.ExtractByMask(input_raster, tile_geometry)
             
             # Save clipped raster as TIFF in "drone_image" folder
-            output_raster_tif = os.path.join(output_drone_image, f"clipped_raster_{tile_id}.tif")
+            output_raster_tif = os.path.join(output_tif, f"{DateSource}_{tile_id}.tif")
             mask.save(output_raster_tif)
             
             print("***************output raster (TIFF) created *******************")
             print(output_raster_tif)
 
             # Convert TIFF to PNG and save in "png" folder
-            output_raster_png = os.path.join(output_png, f"clipped_raster_{tile_id}.png")
+            output_raster_png = os.path.join(output_png, f"{DateSource}_{tile_id}.png")
             arcpy.management.CopyRaster(output_raster_tif, output_raster_png, "","0","0","","ColormapToRGB","8_BIT_UNSIGNED","","", format = "PNG")
             
             
@@ -55,14 +55,44 @@ def clip_raster_by_tile(input_raster, tile_shapefile, output_folder):
             arcpy.env.extent = None
 
 if __name__ == "__main__":
+    
+    # Capture start time
+    start_time = time.time()
+    print("Start:", time.ctime())  # Track progress
+    
     # Set input parameters
-    #input_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Downloaded_Tif_image\Washington\North_Cove\2020\NorthCove20_Clipped.tif"
-    input_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs20\NorthCov20_tiles_20_index_001.tif"
+    input_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Downloaded_Tif_image\Washington\North_Cove\2020\NorthCove20_Clipped.tif"
+    index_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs20\NorthCov20_tiles_20_index_001.tif"
 
-    tile_shapefile = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NorthCov20_tiles_100.shp"
-    output_folder = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs20\Clipped_0220"
+    tile_shapefile = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs10\NorthCov20_tiles_10_selected.shp"
+    
+    DataSource = 'NC_20'
+    
+    output_folder = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs10"
 
     print("Parameters read. Start processing... ")
+    
+    # Create output folders if they don't exist
+    output_drone_image = os.path.join(output_folder, "drone_image")
+    if not os.path.exists(output_drone_image):
+        os.makedirs(output_drone_image)
+
+    output_index = os.path.join(output_folder, "index_tile")
+    if not os.path.exists(output_index):
+        os.makedirs(output_index)
+
+
     # Call the function to clip raster by each tile
-    clip_raster_by_tile(input_raster, tile_shapefile, output_folder)
-    print("All done")
+    clip_raster_by_tile(input_raster, tile_shapefile, DataSource, output_drone_image)
+    print("Drone images are clipped:", time.ctime())
+    clip_raster_by_tile(index_raster, tile_shapefile, DataSource,  output_index)
+    print("Index images are clipped:", time.ctime())
+    
+    print("All done:", time.ctime())
+
+    # Calculate total processing time
+    end_time = time.time()
+    total_processing_time = end_time - start_time
+
+    # Print total processing time
+    print(f"Total processing time: {total_processing_time} seconds.")
