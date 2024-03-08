@@ -61,14 +61,14 @@ if __name__ == "__main__":
     print("Start:", time.ctime())  # Track progress
     
     # Set input parameters
-    input_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Downloaded_Tif_image\Washington\North_Cove\2020\NorthCove20_Clipped.tif"
-    index_raster = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs20\NorthCov20_tiles_20_index_001.tif"
+    input_raster = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Washington\North_Cove\2021\NorthCov21_Clipped.tif"
+    index_raster = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\NC_2021\index_raster.tif"
 
-    tile_shapefile = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs10\NorthCov20_tiles_10_selected.shp"
+    tile_shapefile = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\NC_2020\Autoclip512\tile_index_selected.shp"
     
-    DataSource = 'NC_20'
+    DataSource = 'NC_21'
     
-    output_folder = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Temp\NC20_cs10"
+    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\NC_2021"
 
     print("Parameters read. Start processing... ")
     
