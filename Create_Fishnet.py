@@ -20,7 +20,7 @@ def create_tiles_from_raster(input_raster, output_shapefile, tile_size):
     corner_coord = f"{extent.XMax} {extent.YMax}"
     
     # Create a Fishnet grid
-    arcpy.CreateFishnet_management(output_shapefile, origin_coord, y_axis_coord, tile_size, tile_size, "0", "0", corner_coord, "NO_LABELS", input_raster)
+    arcpy.CreateFishnet_management(output_shapefile, origin_coord, y_axis_coord, tile_size, tile_size, "0", "0", corner_coord, "LABELS", input_raster, geometry_type="POLYGON")
 
 
     print("***************output fishnet (tile) created *******************")
