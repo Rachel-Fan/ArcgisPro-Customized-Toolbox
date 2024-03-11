@@ -49,12 +49,19 @@ def create_index_shapefile(input_folder, output_folder, input_raster_for_extent)
                         if extent_poly.intersect(extent_poly_input, 1).area > 0:
                             cursor.insertRow([row_input[0], 1])  # Insert input shapefile feature with 'seagrass' field as 1
 
-def generate_raster(input_shapefile, output_raster, cell_size):
+def generate_raster(input_shapefile, output_raster, cell_size, bpp=8):
     # Define the output raster coordinate system (optional, modify as needed)
     sr = arcpy.Describe(input_shapefile).spatialReference
 
     # Perform Polygon to Raster conversion
-    arcpy.conversion.PolygonToRaster(input_shapefile, "Seagrass", output_raster, "CELL_CENTER", "NONE", cell_size)
+    arcpy.conversion.PolygonToRaster(input_shapefile, "Seagrass", "temp_raster", "CELL_CENTER", "NONE", cell_size)
+
+    # Copy the raster to the desired output raster with specified bpp
+    arcpy.management.CopyRaster("temp_raster", output_raster, pixel_type="8_BIT_UNSIGNED" if bpp == 8 else
+                                "16_BIT_UNSIGNED" if bpp == 16 else "32_BIT_FLOAT")
+
+    # Delete temporary raster
+    arcpy.management.Delete("temp_raster")
 
 # Set input and output folder paths
 #input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Washington\North_Cove\2021\NC21_Eelgrass_New"
@@ -105,9 +112,10 @@ for filename in os.listdir(input_folder):
  
 # Generate output raster filename by replacing ".shp" with ".tif"
 output_raster = os.path.join(output_folder, "index_tif.tif")
+arcpy.env.workspace = output_folder
 
 # Generate raster
-generate_raster(input_index_shp, output_raster, cell_size)
+generate_raster(input_index_shp, output_raster, cell_size, bpp=8)
 
 print("***************output index raster created *******************")
 print(output_raster) 
