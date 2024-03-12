@@ -1,4 +1,1 @@
-import Clip_Raster_by_Tiles
-import ResizeImages
-
-import create-raster-extent
+import create_raster_extent

@@ -29,6 +29,14 @@ def extract_prefix(input_raster):
     
     return prefix
 
+def perform_raster_calculator(input_raster, output_raster):
+    # Set environment settings to ensure extent matching
+    arcpy.env.extent = arcpy.Describe(input_raster).extent
+    
+    # Perform raster calculator operation
+    expression = 'Con(IsNull("{}"), 0, 1)'.format(input_raster)
+    arcpy.gp.RasterCalculator_sa(expression, output_raster)
+
 def main(input_raster, output_folder):
     prefix = extract_prefix(input_raster)
     temp_folder = os.path.join(output_folder, f"temp_{prefix}")
@@ -38,11 +46,12 @@ def main(input_raster, output_folder):
 
     output_raster_path = os.path.join(temp_folder, "output_raster.tif")
     output_polygon = os.path.join(temp_folder, "input_raster_extent.shp")
+    output_index_tif = os.path.join(temp_folder, "index_tif.shp")
 
     process_raster(input_raster, output_raster_path)
     raster_to_polygon(output_raster_path, output_polygon)
-
-    
+    perform_raster_calculator(output_polygon, output_index_tif)
+    print('')
 
 #if __name__ == "__main__":
 
