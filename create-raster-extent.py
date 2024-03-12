@@ -20,6 +20,7 @@ def extract_prefix(input_raster):
 
 def main(input_raster, output_folder):
     prefix = extract_prefix(input_raster)
+    print('prefix is ', prefix)
     temp_folder = os.path.join(output_folder, f"temp_{prefix}")
 
     set_environment(temp_folder, True)
@@ -28,12 +29,13 @@ def main(input_raster, output_folder):
     output_polygon = os.path.join(temp_folder, "input_raster_extent.shp")
 
     process_raster(input_raster, output_raster_path)
+    print('process raster geoprocessing is done' )
     raster_to_polygon(output_raster_path, output_polygon)
 
     print("Geoprocessing complete.")
 
 if __name__ == "__main__":
-    input_raster = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\NC_2021\Tool_Temp\input_raster.tif"
-    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\output"
+    input_raster = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Washington\North_Cove\2019\NC_19_Clipped.tif"
+    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\2019\Washington"
 
     main(input_raster, output_folder)
