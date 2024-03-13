@@ -33,8 +33,15 @@ def clip_image(input_image_path, output_folder, tile_size=512):
 if __name__ == "__main__":
     # Input image path
     input_image_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Washington\North_Cove\2021\NC_rc_TOOL.tif"
+    index_image_path = r""
     
     # Output folder
     output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\NC_2021\Tool_Temp\clip\index"
+    
+    image_folder = os.path.join(output_folder, f"temp_{prefix}")
+    if not os.path.exists(image_folder):
+        os.makedirs(image_folder) 
+    
     # Clip the image
     clip_image(input_image_path, output_folder)
+    
