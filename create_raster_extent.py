@@ -29,6 +29,10 @@ def extract_prefix(input_raster):
     
     return prefix
 
+def convert_shapefile_to_tif(input_shapefile, output_raster):
+    arcpy.FeatureToRaster_conversion(input_shapefile, "Value", output_raster)
+
+
 def perform_raster_calculator(input_raster, output_raster):
     # Set environment settings to ensure extent matching
     arcpy.env.extent = arcpy.Describe(input_raster).extent
