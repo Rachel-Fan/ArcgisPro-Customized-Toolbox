@@ -94,8 +94,8 @@ def main(input_folder, output_folder):
     print("*****************************")
 
 if __name__ == "__main__":
-    input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Washington\Beach_Haven\2019"
-    #input_shp = r"C:\Users\Rachel\Documents\Seagrass\Dataset\2019\NC_19_Eelgrass.shp"
-    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington\2019" 
+    year = "2019"  # Change the year here
+    input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Washington\Beach_Haven\{}".format(year)
+    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington\{}".format(year)
     main(input_folder, output_folder)
     print('Raster calculator processing completed')

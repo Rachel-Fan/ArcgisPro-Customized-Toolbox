@@ -37,29 +37,49 @@ def clip_image(input_image_path, output_folder, tile_size=512):
 
     print("Clipping completed successfully.")
 
+
 if __name__ == "__main__":
-    # Input image path
-    input_image_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Washington\Beach_Haven\2019\BH_19_Clipped.tif"
-    index_image_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington\2019\BH_19_index_tif.tif"
+    year = "2019"  # Change the year here
+    input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\DroneImageByYear\Washington\{}".format(year)
+    index_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington\{}\index_tif".format(year)
+    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington\{}".format(year)
     
-    prefix = extract_prefix(input_image_path)
-    print('prefix is', prefix)
+    # Iterate through the files in the input folder
+    for input_image_file in os.listdir(input_folder):
+        if input_image_file.endswith('.tif'):  # Check if the file ends with ".tif"
+        
+            input_image_path = os.path.join(input_folder, input_image_file)
+            input_prefix = extract_prefix(input_image_path)
+            prefix = input_prefix
+            print('Input prefix is:', input_prefix)
+            
+            # Create output folder for input images based on the prefix
+            image_output_folder = os.path.join(output_folder, f"image_{input_prefix}")
+            if not os.path.exists(image_output_folder):
+                os.makedirs(image_output_folder)
+            
+            # Clip the input image
+            clip_image(input_image_path, image_output_folder)
+            print(input_image_file, 'Drone image is extracted')
     
-    # Output folder
-    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington\2019"
+    # Iterate through the files in the index folder
+    for index_image_file in os.listdir(index_folder):
+        if index_image_file.endswith('.tif'):  # Check if the file ends with ".tif"
+        
+            print('index image is', index_image_file)
+            index_image_path = os.path.join(index_folder, index_image_file)
+            index_prefix = extract_prefix(index_image_path)
+            prefix = index_prefix
+            print('Index prefix is:', index_prefix)
+            
+            # Create output folder for index images based on the prefix
+            index_output_folder = os.path.join(output_folder, f"index_{index_prefix}")
+            if not os.path.exists(index_output_folder):
+                os.makedirs(index_output_folder)
+            
+            # Clip the index image
+            clip_image(index_image_path, index_output_folder)
+            print(index_image_file, 'Index image is extracted')
     
-    image_folder = os.path.join(output_folder, f"image_{prefix}")
-    if not os.path.exists(image_folder):
-        os.makedirs(image_folder) 
-    
-    index_folder = os.path.join(output_folder, f"index_{prefix}")
-    if not os.path.exists(index_folder):
-        os.makedirs(index_folder) 
-    
-    
-    # Clip the image
-    clip_image(input_image_path, image_folder)
-    print('drone images are extracted')
-    clip_image(index_image_path, index_folder)
-    print('index image is extracted')
-    
+    print('All image clip is complete!')
+    print('**********************************************')
