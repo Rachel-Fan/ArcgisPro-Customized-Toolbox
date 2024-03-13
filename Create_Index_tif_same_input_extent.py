@@ -29,18 +29,6 @@ def convert_shapefile_to_tif(input_shapefile, output_raster, cell_size, bpp=8):
     arcpy.conversion.PolygonToRaster(input_shapefile, "FID", os.path.basename(output_raster), "CELL_CENTER", "NONE", cell_size)
     print('eelgrass extent tif is create at', output_raster)
     
-    # Perform Polygon to Raster conversion
-    #arcpy.conversion.PolygonToRaster(input_shapefile, "FID", output_raster, "CELL_CENTER", "NONE", cell_size)
-
-    
-    # Copy the raster to the desired output raster with specified bpp
-    #arcpy.management.CopyRaster("temp_raster", output_raster, pixel_type="8_BIT_UNSIGNED" if bpp == 8 else "16_BIT_UNSIGNED" if bpp == 16 else "32_BIT_FLOAT")
-
-    # Delete temporary raster
-    #arcpy.management.Delete("temp_raster")
-    
-    #arcpy.FeatureToRaster_conversion(input_shapefile, "Value", output_raster)
-    
 def perform_raster_calculator(input_raster, index_raster, output_raster):
     # Set environment workspace to output folder
     arcpy.env.workspace = None
@@ -50,12 +38,9 @@ def perform_raster_calculator(input_raster, index_raster, output_raster):
     
     # Perform raster calculator operation
     expression = 'Con(IsNull("{}"), 0, 1)'.format(index_raster.replace("\\", "/"))
-    print('express is', expression)
+    #print('express is', expression)
     arcpy.gp.RasterCalculator_sa(expression, output_raster)
     
-    # Perform raster calculator operation
-    #arcpy.gp.RasterCalculator_sa('Con(IsNull(index_raster), 0, 1)', output_raster)
-
 
 
 def main(input_folder, output_folder):
@@ -77,16 +62,22 @@ def main(input_folder, output_folder):
     print('input_shapefile is ', input_shp)
     
     prefix = extract_prefix(input_shp)
+    temp_root_folder = os.path.join(output_folder, "Temp")
+    if not os.path.exists(temp_root_folder):
+        os.makedirs(temp_root_folder) 
     temp_folder = os.path.join(output_folder, f"temp_{prefix}")
     if not os.path.exists(temp_folder):
-        os.makedirs(temp_folder) 
+        os.makedirs(temp_folder)  
+    index_tif_folder = os.path.join(output_folder, "Index_tif")
+    if not os.path.exists(index_tif_folder):
+        os.makedirs(index_tif_folder)      
+    
     print('prefix is', prefix)
     
     set_environment(temp_folder, True)
 
-    output_raster = os.path.join(temp_folder, "output_raster_0312.tif")
-    output_polygon = os.path.join(temp_folder, "input_raster_extent.shp")
-    output_index_tif = os.path.join(output_folder, f"{prefix}_index_tif.tif")
+    output_raster = os.path.join(temp_folder, f"{prefix}_output_raster.tif")
+    output_index_tif = os.path.join(index_tif_folder, f"{prefix}_index_tif.tif")
 
     # process_raster(input_raster, output_raster_path)
     # raster_to_polygon(output_raster_path, output_polygon)
@@ -103,8 +94,8 @@ def main(input_folder, output_folder):
     print("*****************************")
 
 if __name__ == "__main__":
-    input_folder = r"C:\Users\Rachel\Documents\Seagrass\Dataset\2019"
+    input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Washington\Beach_Haven\2019"
     #input_shp = r"C:\Users\Rachel\Documents\Seagrass\Dataset\2019\NC_19_Eelgrass.shp"
-    output_folder = r"C:\Users\Rachel\Documents\Seagrass\Dataset\Script_0312" 
+    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington\2019" 
     main(input_folder, output_folder)
     print('Raster calculator processing completed')
