@@ -1,7 +1,7 @@
 import os
 import shutil
 
-def copy_tif_files_with_19(input_folder, output_folder):
+def copy_tif_files(input_folder, output_folder):
     # Create the output folder if it doesn't exist
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -23,8 +23,8 @@ def copy_tif_files_with_19(input_folder, output_folder):
 
 print("start")
 folder_type = "index"  # choose 'image' or 'index'
-input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington"
-output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Washington\index"
+input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Bodega Bay"
+output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Bodega Bay\index"
 
-copy_tif_files_with_19(input_folder, output_folder)
+copy_tif_files(input_folder, output_folder)
 print("All files copied")
