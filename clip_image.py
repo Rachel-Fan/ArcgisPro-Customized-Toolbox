@@ -39,10 +39,10 @@ def clip_image(input_image_path, output_folder, tile_size=512):
 
 
 if __name__ == "__main__":
-    year = "2019"  # Change the year here
-    input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\DroneImageByYear\Washington\{}".format(year)
-    index_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington\{}\index_tif".format(year)
-    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Washington\{}".format(year)
+    year = "2022"  # Change the year here
+    input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\DroneImageByYear\Alaska\{}".format(year)
+    index_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Alaska\{}\index_tif".format(year)
+    output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Alaska\{}".format(year)
     
     # Iterate through the files in the input folder
     for input_image_file in os.listdir(input_folder):

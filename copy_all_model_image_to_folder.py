@@ -23,8 +23,8 @@ def copy_tif_files(input_folder, output_folder):
 
 print("start")
 folder_type = "index"  # choose 'image' or 'index'
-input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Bodega Bay"
-output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Bodega Bay\index"
+input_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Alaska"
+output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Alaska\index"
 
 copy_tif_files(input_folder, output_folder)
 print("All files copied")

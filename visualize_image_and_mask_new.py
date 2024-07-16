@@ -15,60 +15,72 @@ class ImageViewer:
         self.window = tk.Tk()
         self.window.title("Image Viewer")
         
+        self.left_frame = ttk.Frame(self.window)
+        self.left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        
+        self.scrollbar = tk.Scrollbar(self.left_frame)
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        self.listbox = tk.Listbox(self.left_frame, yscrollcommand=self.scrollbar.set, height=20)
+        self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.listbox.bind('<<ListboxSelect>>', self.on_select)
+        for filename in filenames:
+            self.listbox.insert(tk.END, filename)
+        
+        self.scrollbar.config(command=self.listbox.yview)
         
         self.frame_images = ttk.Frame(self.window)
-        self.frame_images.pack(padx=10, pady=10)
+        self.frame_images.pack(side=tk.RIGHT, padx=10, pady=10)
         
         self.label_image = tk.Label(self.frame_images)
         self.label_image.grid(row=0, column=0, padx=10)
         
+        self.label_name_image = tk.Label(self.frame_images)
+        self.label_name_image.grid(row=1, column=0)
+        
         self.label_image_2 = tk.Label(self.frame_images)
         self.label_image_2.grid(row=0, column=1, padx=10)
+        
+        self.label_name_image_2 = tk.Label(self.frame_images)
+        self.label_name_image_2.grid(row=1, column=1)
         
         self.label_status = tk.Label(self.window, text="")
         self.label_status.pack(pady=5)
         
-        self.frame_buttons = ttk.Frame(self.window)
-        self.frame_buttons.pack(pady=10)
-        
-        self.button_prev = ttk.Button(self.frame_buttons, text="Previous", command=self.show_previous_image)
-        self.button_prev.grid(row=0, column=0, padx=5)
-        
-        self.button_next = ttk.Button(self.frame_buttons, text="Next", command=self.show_next_image)
-        self.button_next.grid(row=0, column=1, padx=5)
-        
         self.show_current_image()
+        
+    def on_select(self, event):
+        widget = event.widget
+        selection = widget.curselection()
+        if selection:
+            index = selection[0]
+            self.current_index = index
+            self.show_current_image()
         
     def show_current_image(self):
-        filename = self.filenames[self.current_index]
-        image_path = os.path.join(self.image_folder, filename)
-        mask_path = os.path.join(self.mask_folder, filename)
-        
-        try:
-            with Image.open(image_path) as img:
-                with Image.open(mask_path) as mask:
-                    # Resize image to fit within a reasonable display size
-                    img.thumbnail((600,600))
-                    photo_img = ImageTk.PhotoImage(img)
-                    self.label_image.config(image=photo_img)
-                    self.label_image.image = photo_img  # Keep a reference to avoid garbage collection
-                    
-                    mask.thumbnail((600, 600))
-                    photo_img_2 = ImageTk.PhotoImage(mask)
-                    self.label_image_2.config(image=photo_img_2)
-                    self.label_image_2.image = photo_img_2  # Keep a reference to avoid garbage collection
-                    
-                    self.label_status.config(text=f"Image {self.current_index + 1} / {len(self.filenames)}")
-        except FileNotFoundError:
-            print(f"File not found. Ensure both {image_path} and {mask_path} exist.")
-    
-    def show_next_image(self):
-        self.current_index = (self.current_index + 1) % len(self.filenames)
-        self.show_current_image()
-        
-    def show_previous_image(self):
-        self.current_index = (self.current_index - 1) % len(self.filenames)
-        self.show_current_image()
+        if self.filenames:
+            filename = self.filenames[self.current_index]
+            image_path = os.path.join(self.image_folder, filename)
+            mask_path = os.path.join(self.mask_folder, filename)
+            
+            try:
+                with Image.open(image_path) as img:
+                    with Image.open(mask_path) as mask:
+                        img.thumbnail((600,600))
+                        photo_img = ImageTk.PhotoImage(img)
+                        self.label_image.config(image=photo_img)
+                        self.label_image.image = photo_img
+                        
+                        mask.thumbnail((600, 600))
+                        photo_img_2 = ImageTk.PhotoImage(mask)
+                        self.label_image_2.config(image=photo_img_2)
+                        self.label_image_2.image = photo_img_2
+                        
+                        self.label_name_image.config(text=f"Image: {filename}")
+                        self.label_name_image_2.config(text=f"Mask: {filename}")
+                        
+            except FileNotFoundError:
+                print(f"File not found. Ensure both {image_path} and {mask_path} exist.")
     
     def run(self):
         self.window.mainloop()
@@ -78,6 +90,7 @@ def open_corresponding_image(root_folder):
     filenames = os.listdir(image_folder)
     app = ImageViewer(root_folder, filenames)
     app.run()
+
 
 # Example usage:
 root_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All'
