@@ -6,9 +6,12 @@ def count_files_with_patterns(folder_path):
     index_19_count = 0
     index_20_count = 0
     index_21_count = 0
+    index_22_count = 0
+    
     image_19_count = 0
     image_20_count = 0
     image_21_count = 0
+    image_22_count = 0
     
     index_folder_path = os.path.join(folder_path, "index")
     image_folder_path = os.path.join(folder_path, "image")
@@ -23,6 +26,8 @@ def count_files_with_patterns(folder_path):
                 index_20_count += 1
             if "_21" in filename:
                 index_21_count += 1
+            if "_22" in filename:
+                index_22_count += 1
     
     # Count files and patterns in 'image' folder
     for filename in os.listdir(image_folder_path):
@@ -34,6 +39,8 @@ def count_files_with_patterns(folder_path):
                 image_20_count += 1
             if "_21" in filename:
                 image_21_count += 1
+            if "_22" in filename:
+                image_22_count += 1
     
     return {
         "index_count": index_count,
@@ -41,21 +48,25 @@ def count_files_with_patterns(folder_path):
         "index_19_count": index_19_count,
         "index_20_count": index_20_count,
         "index_21_count": index_21_count,
+        "index_22_count": index_22_count,
         "image_19_count": image_19_count,
         "image_20_count": image_20_count,
         "image_21_count": image_21_count,
+        "image_22_count": image_22_count,
     }
 
 # Example usage:
-folder_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada"
+folder_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Bodega Bay"
 counts = count_files_with_patterns(folder_path)
 print("Number of files in 'index' folder:", counts["index_count"])
 print("Number of files in 'image' folder:", counts["image_count"])
 print("Number of '_19' files in 'index' folder:", counts["index_19_count"])
 print("Number of '_20' files in 'index' folder:", counts["index_20_count"])
 print("Number of '_21' files in 'index' folder:", counts["index_21_count"])
+print("Number of '_22' files in 'index' folder:", counts["index_22_count"])
 print("Number of '_19' files in 'image' folder:", counts["image_19_count"])
 print("Number of '_20' files in 'image' folder:", counts["image_20_count"])
 print("Number of '_21' files in 'image' folder:", counts["image_21_count"])
+print("Number of '_22' files in 'image' folder:", counts["image_22_count"])
 
 

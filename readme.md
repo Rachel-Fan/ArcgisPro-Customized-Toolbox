@@ -6,4 +6,6 @@
 
 # clip_image.py
 
-#
+# 3. Once both drone imagery and index are clipped to tiles, move them from seperate state/year folder to a state/image folder for further use
+
+# copy_all_model_image_to_folder.py
