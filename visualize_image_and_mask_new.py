@@ -1,5 +1,5 @@
 import os
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageOps
 import tkinter as tk
 from tkinter import ttk
 
@@ -38,11 +38,17 @@ class ImageViewer:
         self.label_name_image = tk.Label(self.frame_images)
         self.label_name_image.grid(row=1, column=0)
         
+        self.label_image_hist_eq = tk.Label(self.frame_images)
+        self.label_image_hist_eq.grid(row=0, column=1, padx=10)
+        
+        self.label_name_image_hist_eq = tk.Label(self.frame_images)
+        self.label_name_image_hist_eq.grid(row=1, column=1)
+        
         self.label_image_2 = tk.Label(self.frame_images)
-        self.label_image_2.grid(row=0, column=1, padx=10)
+        self.label_image_2.grid(row=0, column=2, padx=10)
         
         self.label_name_image_2 = tk.Label(self.frame_images)
-        self.label_name_image_2.grid(row=1, column=1)
+        self.label_name_image_2.grid(row=1, column=2)
         
         self.label_status = tk.Label(self.window, text="")
         self.label_status.pack(pady=5)
@@ -65,19 +71,29 @@ class ImageViewer:
             
             try:
                 with Image.open(image_path) as img:
+                    # Display original image
+                    img.thumbnail((600,600))
+                    photo_img = ImageTk.PhotoImage(img)
+                    self.label_image.config(image=photo_img)
+                    self.label_image.image = photo_img
+                    
+                    # Apply histogram equalization
+                    img_eq = ImageOps.equalize(img)
+                    img_eq.thumbnail((600,600))
+                    photo_img_eq = ImageTk.PhotoImage(img_eq)
+                    self.label_image_hist_eq.config(image=photo_img_eq)
+                    self.label_image_hist_eq.image = photo_img_eq
+                    
+                    # Display mask image
                     with Image.open(mask_path) as mask:
-                        img.thumbnail((600,600))
-                        photo_img = ImageTk.PhotoImage(img)
-                        self.label_image.config(image=photo_img)
-                        self.label_image.image = photo_img
-                        
                         mask.thumbnail((600, 600))
                         photo_img_2 = ImageTk.PhotoImage(mask)
                         self.label_image_2.config(image=photo_img_2)
                         self.label_image_2.image = photo_img_2
                         
-                        self.label_name_image.config(text=f"Image: {filename}")
-                        self.label_name_image_2.config(text=f"Mask: {filename}")
+                    self.label_name_image.config(text=f"Original: {filename}")
+                    self.label_name_image_hist_eq.config(text=f"Histogram Equalized: {filename}")
+                    self.label_name_image_2.config(text=f"Mask: {filename}")
                         
             except FileNotFoundError:
                 print(f"File not found. Ensure both {image_path} and {mask_path} exist.")
