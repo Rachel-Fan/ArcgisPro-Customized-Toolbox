@@ -33,6 +33,6 @@ def process_all_images(input_folder, output_folder):
             print(f"Processed and saved {filename}")
 
 
-input_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All\index'
-output_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All\enhanced_mask'
+input_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Bodega Bay\2020\index_BL_BB_20'
+output_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Bodega Bay\2020\index_BL_BB_20\enhanced_mask'
 process_all_images(input_folder, output_folder)
