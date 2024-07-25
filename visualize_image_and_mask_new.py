@@ -2,12 +2,15 @@ import os
 from PIL import Image, ImageTk, ImageOps
 import tkinter as tk
 from tkinter import ttk
+import cv2
+import numpy as np
 
 class ImageViewer:
     def __init__(self, root_folder, filenames):
         self.root_folder = root_folder
         self.filenames = filenames
         self.current_index = 0
+        self.enhancement = 'original'
         
         self.image_folder = os.path.join(root_folder, "image")
         self.mask_folder = os.path.join(root_folder, "enhanced_mask")
@@ -52,6 +55,19 @@ class ImageViewer:
         
         self.label_status = tk.Label(self.window, text="")
         self.label_status.pack(pady=5)
+
+        # Buttons for selecting enhancement type
+        self.button_frame = ttk.Frame(self.window)
+        self.button_frame.pack(pady=10)
+        
+        self.btn_original = ttk.Button(self.button_frame, text="Original", command=self.set_original)
+        self.btn_original.grid(row=0, column=0, padx=5)
+        
+        self.btn_clahe = ttk.Button(self.button_frame, text="CLAHE", command=self.set_clahe)
+        self.btn_clahe.grid(row=0, column=1, padx=5)
+        
+        self.btn_gamma = ttk.Button(self.button_frame, text="Gamma Correction", command=self.set_gamma)
+        self.btn_gamma.grid(row=0, column=2, padx=5)
         
         self.show_current_image()
         
@@ -72,17 +88,23 @@ class ImageViewer:
             try:
                 with Image.open(image_path) as img:
                     # Display original image
-                    img.thumbnail((600,600))
+                    img.thumbnail((600, 600))
                     photo_img = ImageTk.PhotoImage(img)
                     self.label_image.config(image=photo_img)
                     self.label_image.image = photo_img
                     
-                    # Apply histogram equalization
-                    img_eq = ImageOps.equalize(img)
-                    img_eq.thumbnail((600,600))
-                    photo_img_eq = ImageTk.PhotoImage(img_eq)
-                    self.label_image_hist_eq.config(image=photo_img_eq)
-                    self.label_image_hist_eq.image = photo_img_eq
+                    # Apply selected enhancement
+                    if self.enhancement == 'clahe':
+                        img_enhanced = self.apply_clahe(img)
+                    elif self.enhancement == 'gamma':
+                        img_enhanced = self.adjust_gamma(img, gamma=1.5)
+                    else:
+                        img_enhanced = img
+                    
+                    img_enhanced.thumbnail((600, 600))
+                    photo_img_enhanced = ImageTk.PhotoImage(img_enhanced)
+                    self.label_image_hist_eq.config(image=photo_img_enhanced)
+                    self.label_image_hist_eq.image = photo_img_enhanced
                     
                     # Display mask image
                     with Image.open(mask_path) as mask:
@@ -90,13 +112,40 @@ class ImageViewer:
                         photo_img_2 = ImageTk.PhotoImage(mask)
                         self.label_image_2.config(image=photo_img_2)
                         self.label_image_2.image = photo_img_2
-                        
+                    
                     self.label_name_image.config(text=f"Original: {filename}")
-                    self.label_name_image_hist_eq.config(text=f"Histogram Equalized: {filename}")
+                    enhancement_text = f"{self.enhancement.capitalize()}: {filename}"
+                    self.label_name_image_hist_eq.config(text=enhancement_text)
                     self.label_name_image_2.config(text=f"Mask: {filename}")
-                        
+                    
             except FileNotFoundError:
                 print(f"File not found. Ensure both {image_path} and {mask_path} exist.")
+    
+    def set_original(self):
+        self.enhancement = 'original'
+        self.show_current_image()
+        
+    def set_clahe(self):
+        self.enhancement = 'clahe'
+        self.show_current_image()
+        
+    def set_gamma(self):
+        self.enhancement = 'gamma'
+        self.show_current_image()
+    
+    def apply_clahe(self, image):
+        img_array = np.array(image)
+        if len(img_array.shape) == 3:
+            img_array = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+        clahe_img = clahe.apply(img_array)
+        return Image.fromarray(clahe_img)
+
+    def adjust_gamma(self, image, gamma=1.0):
+        inv_gamma = 1.0 / gamma
+        table = [((i / 255.0) ** inv_gamma) * 255 for i in range(256)]
+        table = np.array(table, np.uint8)
+        return Image.fromarray(cv2.LUT(np.array(image), table))
     
     def run(self):
         self.window.mainloop()
