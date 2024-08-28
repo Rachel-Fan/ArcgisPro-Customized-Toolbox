@@ -36,13 +36,18 @@ for filename in os.listdir(source_folder):
                 if pixel != (0, 0, 0, 255):
                     non_black_pixels += 1
         
-        # Check if there are any non-black pixels and copy the image if there are
-        if non_black_pixels > 0:
+        # Calculate the total number of pixels and the 10%-90% range for non-black pixels
+        total_pixels = width * height
+        min_non_black_pixels = total_pixels * 0.1
+        max_non_black_pixels = total_pixels * 0.9
+        
+        # Check if the number of non-black pixels is within the 10%-90% range
+        if min_non_black_pixels <= non_black_pixels <= max_non_black_pixels:
             destination_path = os.path.join(destination_folder, filename)
             shutil.copy(image_path, destination_path)
-            print(f"Copied {filename} to {destination_path} because it contains {non_black_pixels} non-black pixels.")
+            print(f"Copied {filename} to {destination_path} because it contains {non_black_pixels} non-black pixels, which is within the 10%-90% range.")
         else:
-            print(f"{filename} contains only black pixels and was not copied.")
+            print(f"{filename} contains {non_black_pixels} non-black pixels, which is not within the 10%-90% range, and was not copied.")
 
 # Print completion message
 print("Processing complete.")

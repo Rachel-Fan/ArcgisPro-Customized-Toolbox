@@ -56,7 +56,7 @@ def count_files_with_patterns(folder_path):
     }
 
 # Example usage:
-folder_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Bodega Bay"
+folder_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada"
 counts = count_files_with_patterns(folder_path)
 print("Number of files in 'index' folder:", counts["index_count"])
 print("Number of files in 'image' folder:", counts["image_count"])

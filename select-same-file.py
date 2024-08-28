@@ -2,21 +2,28 @@ import os
 import shutil
 
 def select_same_filenames(folder1, folder2):
-    # List all files in folder1 and folder2
+    # List all files in folder1
     files1 = os.listdir(folder1)
-    files2 = os.listdir(folder2)
     print(files1)
+    
+    # Initialize a set to store all png files in folder2 and its subfolders
+    files2 = set()
+    for root, dirs, files in os.walk(folder2):
+        for file in files:
+            if file.lower().endswith('.png'):
+                files2.add(os.path.relpath(os.path.join(root, file), folder2))
+    
     print('files2 are', files2)
     
     # Extract file names without extension for comparison
     base_names1 = {os.path.splitext(file)[0] for file in files1}
-    base_names2 = {os.path.splitext(file)[0] for file in files2}
+    base_names2 = {os.path.splitext(os.path.basename(file))[0] for file in files2}
     
     # Find common file names (without extension)
     common_files = base_names1 & base_names2
     
     # Filter out the files in folder2 that have the same base name as the files in folder1
-    common_files_with_extension = {file for file in files2 if os.path.splitext(file)[0] in common_files}
+    common_files_with_extension = {file for file in files2 if os.path.splitext(os.path.basename(file))[0] in common_files}
     
     return common_files_with_extension
 
@@ -26,6 +33,9 @@ def copy_files(source_folder, files, destination_folder):
     for file in files:
         source_path = os.path.join(source_folder, file)
         destination_path = os.path.join(destination_folder, file)
+        destination_dir = os.path.dirname(destination_path)
+        if not os.path.exists(destination_dir):
+            os.makedirs(destination_dir)
         shutil.copy(source_path, destination_path)
 
 def main(folder1_path, folder2_path, folder3_path):
@@ -45,7 +55,7 @@ def main(folder1_path, folder2_path, folder3_path):
 if __name__ == "__main__":
     print('Start')
     # Prompt user to enter folder paths
-    folder1_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All\test\index" # folder of file names read from
+    folder1_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\image" # folder of file names read from
     folder2_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All\image" # folder we copy from
     folder3_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All\test\image" # folder we copy to
     
@@ -53,4 +63,3 @@ if __name__ == "__main__":
     main(folder1_path, folder2_path, folder3_path)
     
     print("Done")
-

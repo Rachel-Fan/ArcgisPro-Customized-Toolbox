@@ -2,8 +2,8 @@ import os
 from PIL import Image, ImageTk, ImageOps
 import tkinter as tk
 from tkinter import ttk
-import cv2
 import numpy as np
+import cv2
 
 class ImageViewer:
     def __init__(self, root_folder, filenames):
@@ -65,6 +65,9 @@ class ImageViewer:
         
         self.btn_hist_eq = ttk.Button(self.button_frame, text="Histogram Equalization", command=self.set_hist_eq)
         self.btn_hist_eq.grid(row=1, column=0, pady=5)
+
+        self.btn_std_dev = ttk.Button(self.button_frame, text="Std Deviation Enhancement", command=self.set_std_dev)
+        self.btn_std_dev.grid(row=2, column=0, pady=5)
         
         self.show_current_image()
         
@@ -95,6 +98,8 @@ class ImageViewer:
                         img_enhanced = self.apply_clahe(img)
                     elif self.enhancement == 'hist_eq':
                         img_enhanced = self.apply_hist_eq(img)
+                    elif self.enhancement == 'std_dev':
+                        img_enhanced = self.apply_standard_deviation_enhancement(img)
                     
                     img_enhanced.thumbnail((600, 600))
                     photo_img_enhanced = ImageTk.PhotoImage(img_enhanced)
@@ -124,6 +129,10 @@ class ImageViewer:
         self.enhancement = 'hist_eq'
         self.show_current_image()
     
+    def set_std_dev(self):
+        self.enhancement = 'std_dev'
+        self.show_current_image()
+    
     def apply_clahe(self, image):
         img_array = np.array(image)
         if len(img_array.shape) == 3:
@@ -133,9 +142,30 @@ class ImageViewer:
         return Image.fromarray(clahe_img)
 
     def apply_hist_eq(self, image):
-    # Apply PIL's histogram equalization to the image
         img_eq = ImageOps.equalize(image)
         return img_eq
+    
+    def apply_standard_deviation_enhancement(self, image):
+        # Convert the image to a numpy array
+        img_array = np.array(image)
+
+        # Calculate the mean and standard deviation of the pixel values
+        mean = np.mean(img_array)
+        std_dev = np.std(img_array)
+
+        # Define the range for stretching
+        lower_bound = mean - std_dev
+        upper_bound = mean + std_dev
+
+        # Clip the values outside the range
+        img_array = np.clip(img_array, lower_bound, upper_bound)
+
+        # Scale the pixel values to the full 0-255 range
+        img_array = 255 * (img_array - lower_bound) / (upper_bound - lower_bound)
+        img_array = np.clip(img_array, 0, 255).astype(np.uint8)
+
+        # Convert back to PIL image
+        return Image.fromarray(img_array)
     
     def run(self):
         self.window.mainloop()
@@ -145,6 +175,7 @@ def open_corresponding_image(root_folder):
     filenames = os.listdir(image_folder)
     app = ImageViewer(root_folder, filenames)
     app.run()
+
 
 # Example usage:
 root_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All'

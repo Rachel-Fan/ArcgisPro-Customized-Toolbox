@@ -9,3 +9,15 @@
 # 3. Once both drone imagery and index are clipped to tiles, move them from seperate state/year folder to a state/image folder for further use
 
 # copy_all_model_image_to_folder.py
+
+# 3.5. From 8/3/24, use select-index-between-5-90.py
+
+# the index with 5%-90% non-blank pixel coverage are copied to image/State/index, and the corresponding images are copied to image/State/image also.
+
+# 4. Collect processed images/indexes number
+
+# count-png-in-subfolder.py
+
+# 5. Validate processed images/indexes number in image folder
+
+# count-image-counts.py

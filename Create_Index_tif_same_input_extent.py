@@ -6,11 +6,11 @@ import glob
 def set_environment(workspace, overwrite):
     arcpy.env.workspace = workspace
     arcpy.env.overwriteOutput = overwrite
-    
+
 def extract_prefix(input_raster):
     basename = os.path.basename(input_raster)
     parts = basename.split("_")
-    prefix = "_".join(parts[:2])  # Join the first two parts with an underscore
+    prefix = "_".join(parts[:2])
     print('prefix is ', prefix)
     return prefix
 
@@ -20,10 +20,12 @@ def get_cell_size(input_raster):
     print('cell size is', cell_size)
     return cell_size
 
-def convert_shapefile_to_tif(input_shapefile, output_raster, cell_size, bpp=8):
+def convert_shapefile_to_tif(input_shapefile, output_raster, cell_size):
     arcpy.env.workspace = os.path.dirname(output_raster)
-    arcpy.conversion.PolygonToRaster(input_shapefile, "FID", os.path.basename(output_raster), "CELL_CENTER", "NONE", cell_size)
+    arcpy.env.extent = arcpy.Describe(input_shapefile).extent
+    arcpy.conversion.PolygonToRaster(input_shapefile, "FID", output_raster, "CELL_CENTER", "NONE", cell_size)
     print('convert shp to tif done')
+    print('converted tif from', input_shapefile, 'is', output_raster)
 
 def perform_raster_calculator(input_raster, index_raster, output_raster):
     arcpy.env.workspace = None
@@ -42,8 +44,11 @@ def main(input_folder, output_folder, year):
     shp_files = glob.glob(os.path.join(input_folder, '*.shp'))
 
     for input_raster in tif_files:
+        print('input raster is', input_raster)
         matching_shp = next((shp for shp in shp_files if extract_prefix(shp) == extract_prefix(input_raster)), None)
+        
         if not matching_shp:
+            print('no matching shp found')
             continue  # No matching shapefile found, skip to next raster
 
         prefix = extract_prefix(input_raster)
@@ -53,15 +58,18 @@ def main(input_folder, output_folder, year):
         set_environment(temp_folder, True)
         cell_size = get_cell_size(input_raster)
         convert_shapefile_to_tif(matching_shp, output_raster, cell_size)
+        print('matching shp is ', matching_shp)
+        print('output raster is', output_raster)
         perform_raster_calculator(input_raster, output_raster, output_index_tif)
+        print('output index is', output_index_tif)
 
 if __name__ == "__main__":
-    base_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Bodega Bay"
-    years = ["2022"]  # List of years to process
+    base_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Oregon"
+    years = ["2019", "2020", "2021", "2022"]  # List of years to process
     for year in years:  # Loop over each year
         for folder in os.listdir(base_folder):
             input_folder = os.path.join(base_folder, folder, year)
-            output_folder = os.path.join(r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Bodega Bay\New_0717", year)
+            output_folder = os.path.join(r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Oregon", year)
             if os.path.isdir(input_folder):  # Ensure it is a directory
                 print(f"Processing data in {input_folder} for the year {year}")
                 main(input_folder, output_folder, year)
