@@ -1,7 +1,7 @@
 from PIL import Image
 
 # Load the image
-image_path  = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\image\SU_CA_20_row3_col4.png"
+image_path  = r"D:\ML_Seagrass\SourceData\Alaska\Alaska\predicted\FI_AK_19_row2_col5.png"
 img = Image.open(image_path)
 
 # Convert the image to RGBA format if it is not already
