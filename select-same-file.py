@@ -55,9 +55,9 @@ def main(folder1_path, folder2_path, folder3_path):
 if __name__ == "__main__":
     print('Start')
     # Prompt user to enter folder paths
-    folder1_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\image" # folder of file names read from
-    folder2_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All\image" # folder we copy from
-    folder3_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All\test\image" # folder we copy to
+    folder1_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Bodega Bay\BodegaBay\train\image" # folder of file names read from
+    folder2_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Bodega Bay\glcm" # folder we copy from
+    folder3_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Bodega Bay\BodegaBay\train\glcm" # folder we copy to
     
     print('Start selecting')
     main(folder1_path, folder2_path, folder3_path)

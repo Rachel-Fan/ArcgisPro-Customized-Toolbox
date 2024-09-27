@@ -173,10 +173,13 @@ class ImageViewer:
 def open_corresponding_image(root_folder):
     image_folder = os.path.join(root_folder, "image")
     filenames = os.listdir(image_folder)
+    # filenames = os.listdir(root_folder)
     app = ImageViewer(root_folder, filenames)
     app.run()
 
 
 # Example usage:
 root_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Non_Zero\All'
+#root_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Oregon'
+root_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Archive\Non_Zero\All'
 open_corresponding_image(root_folder)

@@ -1,7 +1,7 @@
 from PIL import Image
 
 # Load the image
-image_path  = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\image\SU_CA_20_row3_col4.png"
+image_path  = r"C:\Users\GeoFly\Documents\rfan\Seagrass\glcm\output\3\BA_OR_21_row26_col15.png"
 img = Image.open(image_path)
 
 # Convert the image to RGBA format if it is not already
