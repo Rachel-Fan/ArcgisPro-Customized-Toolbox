@@ -19,5 +19,5 @@ def process_folder(folder_path):
                 convert_to_rgb(file_path)
 
 if __name__ == "__main__":
-    folder_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Alaska\Alaska"
+    folder_path = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\image"
     process_folder(folder_path)
