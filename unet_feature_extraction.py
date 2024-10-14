@@ -83,7 +83,7 @@ def generate_feature_maps(image_path, feature_map_path):
         
 if __name__ == "__main__":
     # Specify the folder containing input images and the output folder for feature maps
-    image_path = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\image' 
+    image_path = r'C:\Users\GeoFly\Documents\rfan\Seagrass\Example_image\images' 
     feature_map_path = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\feature_map'
     
     # Ensure the output directory exists
