@@ -5,10 +5,11 @@ import numpy as np
 from skimage import io, color
 from skimage.feature import graycomatrix
 from scipy.stats import entropy
+from concurrent.futures import ProcessPoolExecutor
 
 # Define the input folder containing the PNG images and output folder
-input_folder = r'D:\ML_Seagrass\SourceData\Alaska\image'
-output_folder = r'D:\ML_Seagrass\SourceData\Alaska\glcm'
+input_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Oregon\image'
+output_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Oregon\glcm'
 
 # Define the distance and angle for the GLCM computation
 distances = [3]  # Distance between pixel pairs
@@ -43,7 +44,46 @@ def convert_seconds_to_hms(seconds):
     minutes, seconds = divmod(rem, 60)
     return int(hours), int(minutes), int(seconds)
 
-def process_images(input_folder, output_folder, distances, angles):
+def process_single_image(filename):
+    try:
+        image_path = os.path.join(input_folder, filename)
+
+        # Start the timer for processing the individual image
+        image_start_time = time.time()
+
+        # Load and convert the image to grayscale
+        image_rgb = io.imread(image_path)
+        if image_rgb is None:
+            print(f"Failed to load image {filename}. Skipping.")
+            return filename, None
+        
+        print(f"Image {filename} loaded successfully.")
+
+        image_gray = color.rgb2gray(image_rgb)
+
+        # Convert grayscale image to uint8
+        image_gray_uint8 = (image_gray * 255).astype(np.uint8)
+
+        # Compute the GLCM entropy
+        entropy_image = compute_glcm_entropy(image_gray_uint8, distances, angles)
+
+        # Save the entropy image
+        output_path = os.path.join(output_folder, f"{os.path.splitext(filename)[0]}.png")
+        plt.imsave(output_path, entropy_image, cmap='gray')
+
+        print(f"Saved entropy image for {filename}.")
+
+        # Calculate the time taken for this image
+        image_end_time = time.time()
+        image_processing_time = image_end_time - image_start_time
+
+        return filename, image_processing_time
+
+    except Exception as e:
+        print(f"Error processing {filename}: {e}")
+        return filename, None
+
+def process_images(input_folder, output_folder, distances, angles, max_workers=6):
     # Get list of all PNG files in the input folder
     image_files = [f for f in os.listdir(input_folder) if f.endswith('.png')]
     total_images = len(image_files)
@@ -56,67 +96,31 @@ def process_images(input_folder, output_folder, distances, angles):
     print(f"Found {total_images} images in the folder.")
 
     # Initialize counter for processed images and start the total time timer
-    processed_images = 0
     start_time = time.time()
-    
-    # Loop through all PNG files in the input folder
-    for filename in image_files:
-        image_path = os.path.join(input_folder, filename)
 
-        # Start the timer for processing the individual image
-        image_start_time = time.time()
+    # Create the output folder if it doesn't exist
+    os.makedirs(output_folder, exist_ok=True)
 
-        try:
-            print(f"Processing {filename}...")
+    # Use ProcessPoolExecutor to parallelize the processing of images
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        # Submit tasks to the executor
+        results = list(executor.map(process_single_image, image_files))
 
-            # Load and convert the image to grayscale
-            image_rgb = io.imread(image_path)
-            if image_rgb is None:
-                print(f"Failed to load image {filename}. Skipping.")
-                continue
-            
-            print(f"Image {filename} loaded successfully.")
-
-            image_gray = color.rgb2gray(image_rgb)
-
-            # Convert grayscale image to uint8
-            image_gray_uint8 = (image_gray * 255).astype(np.uint8)
-
-            # Compute the GLCM entropy
-            entropy_image = compute_glcm_entropy(image_gray_uint8, distances, angles)
-
-            # Save the entropy image
-            output_path = os.path.join(output_folder, f"{os.path.splitext(filename)[0]}.png")
-            plt.imsave(output_path, entropy_image, cmap='gray')
-
-            print(f"Saved entropy image for {filename}.")
-
-            # Increment the processed image counter
+    # Gather results and display processing times
+    processed_images = 0
+    for filename, processing_time in results:
+        if processing_time is not None:
             processed_images += 1
+            img_hours, img_minutes, img_seconds = convert_seconds_to_hms(processing_time)
+            print(f"Processed {filename} in {img_hours}h {img_minutes}m {img_seconds}s.")
 
-            # Calculate the time taken for this image
-            image_end_time = time.time()
-            image_processing_time = image_end_time - image_start_time
-            total_elapsed_time = image_end_time - start_time
-
-            # Convert time to hours, minutes, and seconds
-            img_hours, img_minutes, img_seconds = convert_seconds_to_hms(image_processing_time)
-            total_hours, total_minutes, total_seconds = convert_seconds_to_hms(total_elapsed_time)
-
-            print(f"Processed {filename} in {img_hours}h {img_minutes}m {img_seconds}s. Total time elapsed: {total_hours}h {total_minutes}m {total_seconds}s.")
-
-        except Exception as e:
-            print(f"Error processing {filename}: {e}")
-    
-    # Summary
+    # Calculate total elapsed time
     total_time = time.time() - start_time
     total_hours, total_minutes, total_seconds = convert_seconds_to_hms(total_time)
-    
+
+    # Summary
     print(f"\nProcessing complete. {processed_images} out of {total_images} images processed and saved.")
     print(f"Total processing time: {total_hours}h {total_minutes}m {total_seconds}s.")
 
-# Create the output folder if it doesn't exist
-os.makedirs(output_folder, exist_ok=True)
-
 # Call the process_images function
-process_images(input_folder, output_folder, distances, angles)
+process_images(input_folder, output_folder, distances, angles, max_workers=6)
