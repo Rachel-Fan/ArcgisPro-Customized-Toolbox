@@ -7,8 +7,8 @@ from skimage.feature import graycomatrix
 from scipy.stats import entropy
 
 # Define the input folder containing the PNG images and output folder
-input_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Oregon\image'
-output_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Oregon\glcm'
+input_folder = r'D:\ML_Seagrass\SourceData\Alaska\image'
+output_folder = r'D:\ML_Seagrass\SourceData\Alaska\glcm'
 
 # Define the distance and angle for the GLCM computation
 distances = [3]  # Distance between pixel pairs
