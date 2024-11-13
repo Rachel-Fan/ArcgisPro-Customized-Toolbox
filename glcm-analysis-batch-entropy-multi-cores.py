@@ -8,8 +8,8 @@ from scipy.stats import entropy
 from concurrent.futures import ProcessPoolExecutor
 
 # Define the input folder containing the PNG images and output folder
-input_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Oregon\image'
-output_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Oregon\glcm'
+input_folder = r'D:\ML_Seagrass\SourceData\BodegaBay\image'
+output_folder = r'D:\ML_Seagrass\SourceData\BodegaBay\glcm'
 
 # Define the distance and angle for the GLCM computation
 distances = [3]  # Distance between pixel pairs
@@ -122,5 +122,5 @@ def process_images(input_folder, output_folder, distances, angles, max_workers=6
     print(f"\nProcessing complete. {processed_images} out of {total_images} images processed and saved.")
     print(f"Total processing time: {total_hours}h {total_minutes}m {total_seconds}s.")
 
-# Call the process_images function
-process_images(input_folder, output_folder, distances, angles, max_workers=6)
+if __name__ == "__main__":
+    process_images(input_folder, output_folder, distances, angles, max_workers=4)
