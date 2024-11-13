@@ -1,49 +1,33 @@
 from PIL import Image
 import os
 
-def count_rgb_rgba_images(image_folder):
-    # List all files in the folder
-    files = [f for f in os.listdir(image_folder) if os.path.isfile(os.path.join(image_folder, f))]
-    
-    rgb_count = 0
-    rgba_count = 0
-    rgba_images = []
+import os
+import cv2
 
-    for idx, file in enumerate(files):
-        image_path = os.path.join(image_folder, file)
+def check_image_channels(folder_path):
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
         
-        try:
-            # Open the image
-            with Image.open(image_path) as img:
-                # Get the mode of the image
-                mode = img.mode
-                
-                # Count and record based on the mode
-                if mode == 'RGB':
-                    rgb_count += 1
-                elif mode == 'RGBA':
-                    rgba_count += 1
-                    rgba_images.append(file)
-        
-        except Exception as e:
-            print(f"Error processing {file}: {e}")
+        # Check if the file is an image
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.tif', '.bmp')):
+            image = cv2.imread(file_path)
+            if image is not None:
+                channels = image.shape[2] if len(image.shape) == 3 else 1
+                print(f"{filename}: {channels} channels")
+            else:
+                print(f"{filename}: Unable to read image")
+        else:
+            print(f"{filename}: Not an image file")
 
-    # Print summary
-    print(f"Total images processed: {len(files)}")
-    print(f"Number of RGB images: {rgb_count}")
-    print(f"Number of RGBA images: {rgba_count}")
+# Specify the folder path
+folder_path = r'\\wsl.localhost\Ubuntu\home\geofly\sam-hq\train\hqoutput_GGB_vis\Alaska_mask_only_new'
     
-    # List all RGBA images
-    if rgba_images:
-        print("\nList of RGBA images:")
-        for img in rgba_images:
-            print(img)
-    else:
-        print("\nNo RGBA images found.")
+check_image_channels(folder_path)
 
-if __name__ == "__main__":
-    # Specify the folder containing the images
-    image_folder = r'C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\image'
+
+# if __name__ == "__main__":
+#     # Specify the folder containing the images
+#     image_folder = r'\\wsl.localhost\Ubuntu\home\geofly\sam-hq\train\hqoutput_GGB_vis\Alaska_mask_only_new'
     
-    # Count and list RGBA images
-    count_rgb_rgba_images(image_folder)
+#     # Count and list RGBA images
+#     count_rgb_rgba_images(image_folder)

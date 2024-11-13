@@ -33,6 +33,6 @@ def remove_duplicate_png(folder_path):
                 print(f'Renamed: {old_file_path} -> {new_file_path}')
 
 # Specify the folder path here
-folder_path = r"D:\Seagrass\training_result\RGBChannel\Washington\glcm"
+folder_path = r"D:\Seagrass\training_result\glcm_output\pa-sam\Washington"
 rename_images(folder_path)
 #remove_duplicate_png(folder_path)

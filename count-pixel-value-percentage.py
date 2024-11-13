@@ -27,7 +27,7 @@ def analyze_image(image_path):
 
 def main():
     # Path to the input PNG image
-    image_path = r'C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Canada\2021\index_UN_CA_21\UN_CA_21_row5_col2.png'
+    image_path = r'\\wsl.localhost\Ubuntu\home\geofly\sam-hq\train\hqoutput_GGB_vis\Alaska_mask_only_new\FI_AK_19_row4_col9.png'
     
     # Analyze the image
     pixel_count, non_black_percentage = analyze_image(image_path)
