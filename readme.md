@@ -1,6 +1,10 @@
 # 1. create index tif with same extent and cell size as drone image tif
 
+# Set up python env as ArcGIS python interpreter to utilize ArcPy: C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3
+
 # Create_Index_tif_same_input_extent.py
+
+# pre 2. need to put all tif of one year into the {year} folder (I think there is a script for it.. searching...))
 
 # 2. With drone image tif and index tif ready, clip both tif by a specified size (e.g. 512\*512)
 

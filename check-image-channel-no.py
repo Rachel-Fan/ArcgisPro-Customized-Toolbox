@@ -20,7 +20,7 @@ def check_image_channels(folder_path):
             print(f"{filename}: Not an image file")
 
 # Specify the folder path
-folder_path = r'\\wsl.localhost\Ubuntu\home\geofly\sam-hq\train\hqoutput_GGB_vis\Alaska_mask_only_new'
+folder_path = r'D:\Eelgrass_processed_images_2025\ModelData\Data\Alaska\2019\index_FI_AK_19'
     
 check_image_channels(folder_path)
 

@@ -64,12 +64,12 @@ def main(input_folder, output_folder, year):
         print('output index is', output_index_tif)
 
 if __name__ == "__main__":
-    base_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\SourceData\Oregon"
+    base_folder = r"D:\Eelgrass_Classified_from_Metashape\Alaska"
     years = ["2019", "2020", "2021", "2022"]  # List of years to process
     for year in years:  # Loop over each year
         for folder in os.listdir(base_folder):
             input_folder = os.path.join(base_folder, folder, year)
-            output_folder = os.path.join(r"C:\Users\GeoFly\Documents\rfan\Seagrass\Data\ModelData\Oregon", year)
+            output_folder = os.path.join(r"D:\Eelgrass_processed_images_2025\ModelData\Alaska", year)
             if os.path.isdir(input_folder):  # Ensure it is a directory
                 print(f"Processing data in {input_folder} for the year {year}")
                 main(input_folder, output_folder, year)

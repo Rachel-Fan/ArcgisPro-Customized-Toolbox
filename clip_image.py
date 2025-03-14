@@ -1,6 +1,7 @@
 import cv2
 import os
 import numpy as np
+import timer
 
 def extract_prefix(input_raster):
     basename = os.path.basename(input_raster)
@@ -97,15 +98,15 @@ def main(input_folder, index_folder, output_folder):
 
 
 if __name__ == "__main__":
-    years = ["2022"]
-    state = "Canada"
+    years = ["2019", "2020", "2021", "2022"]
+    state = "Alaska"
     
     for year in years:
         print(f"Starting processing for the year {year}")
 
-        input_folder = f"C:\\Users\\GeoFly\\Documents\\rfan\\Seagrass\\Data\\SourceData\\DroneImageByYear\\{state}\\{year}"
-        index_folder = f"C:\\Users\\GeoFly\\Documents\\rfan\\Seagrass\\Data\\ModelData\\{state}\\\{year}\\index_tif"
-        output_folder = f"C:\\Users\\GeoFly\\Documents\\rfan\\Seagrass\\Data\\ModelData\\{state}\\{year}"
+        input_folder = f"D:\\Eelgrass_Classified_from_Metashape\\UTM\\DroneImageByYear\\{state}\\{year}"
+        index_folder = f"D:\\Eelgrass_processed_images_2025\\ModelData\\{state}\\\{year}\\index_tif"
+        output_folder = f"D:\\Eelgrass_processed_images_2025\\ModelData\\Data\\{state}\\{year}"
         
         main(input_folder, index_folder, output_folder)
         
