@@ -65,9 +65,9 @@ def copy_image_files(train_files, valid_files, test_files, output_folder, image_
     print("Image files copied to respective folders.")
 
 # Define folder paths
-source_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\index"
-output_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\Canada"
-image_source_folder = r"C:\Users\GeoFly\Documents\rfan\Seagrass\image\Canada\image"
+source_folder = r"D:\Eelgrass_processed_images_2025\ModelData\Data_by_image_index\Alaska\index"
+output_folder = r"D:\Eelgrass_processed_images_2025\ModelData\Data_by_image_index\Alaska"
+image_source_folder = r"D:\Eelgrass_processed_images_2025\ModelData\Data_by_image_index\Alaska\image"
 
 # Call the function to split data
 train_files, valid_files, test_files = split_data(source_folder, output_folder)

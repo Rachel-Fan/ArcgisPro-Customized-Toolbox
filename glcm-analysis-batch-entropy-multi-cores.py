@@ -8,8 +8,8 @@ from scipy.stats import entropy
 from concurrent.futures import ProcessPoolExecutor
 
 # Define the input folder containing the PNG images and output folder
-input_folder = r'D:\ML_Seagrass\SourceData\BodegaBay\image'
-output_folder = r'D:\ML_Seagrass\SourceData\BodegaBay\glcm'
+input_folder = r'D:\Eelgrass_processed_images_2025\ModelData\Data_by_image_index\Alaska\image'
+output_folder = r'D:\Eelgrass_processed_images_2025\ModelData\Data_by_image_index\Alaska\glcm'
 
 # Define the distance and angle for the GLCM computation
 distances = [3]  # Distance between pixel pairs
