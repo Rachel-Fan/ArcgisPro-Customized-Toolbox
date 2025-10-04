@@ -90,20 +90,40 @@ def main(input_folder, output_folder, year):
 
         print(f'Final index raster created at {output_index_tif}')
 
+import os
+import time
+
 if __name__ == "__main__":
     start_time = time.time()
-    base_folder = r"D:\Eelgrass_Classified_from_Metashape\UTM\Alaska"
-    years = ["2019", "2020", "2021", "2022"]  # List of years to process
+    base_folder = r"D:\Eelgrass_Classified_from_Metashape\UTM\Washington"
+    years = ["2019", "2020", "2021", "2022", "2024"]  # List of years to process
 
     for year in years:
         for folder in os.listdir(base_folder):
             input_folder = os.path.join(base_folder, folder, year)
-            output_folder = os.path.join(r"D:\Eelgrass_processed_images_2025\ModelData\Alaska_0310_reproj", year)
+            output_folder = os.path.join(
+                r"D:\Eelgrass_processed_images_2025\ModelData\Alaska_0310_reproj", year
+            )
 
             if os.path.isdir(input_folder):
                 print(f"Processing {input_folder} for year {year}")
                 main(input_folder, output_folder, year)
+
     end_time = time.time()
-    print('All specified index rasters for all years are created.')
-    elaspsed_time = end_time-start_time
-    print(f"Execution time: {elaspsed_time:.2f} seconds")
+    print("All specified index rasters for all years are created.")
+
+    # Convert elapsed time into H:M:S
+    elapsed_time = int(end_time - start_time)
+    hours, remainder = divmod(elapsed_time, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    # Build a human-readable string that skips zero values
+    parts = []
+    if hours > 0:
+        parts.append(f"{hours} hours")
+    if minutes > 0:
+        parts.append(f"{minutes} minutes")
+    if seconds > 0 or not parts:  # Always show seconds if everything else is 0
+        parts.append(f"{seconds} seconds")
+
+    print("Execution time: " + " ".join(parts))

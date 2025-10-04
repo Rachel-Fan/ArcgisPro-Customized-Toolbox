@@ -47,7 +47,7 @@ def copy_tif_by_year(source_root, output_root):
             print(f"⚠️ Skipping {tif} (Year not found in path).")
 
 def main():
-    source_directory = r"D:\Eelgrass_Classified_from_Metashape\UTM\Alaska"  # Change as needed
+    source_directory = r"D:\Eelgrass_Classified_from_Metashape\UTM\Washington"  # Change as needed
     output_directory = r"D:\Eelgrass_Classified_from_Metashape\UTM\DroneImageByYear"  # Change as needed
 
     print("\n🚀 Copying TIFF files by Year...")

@@ -8,7 +8,7 @@
 
 # 2. With drone image tif and index tif ready, clip both tif by a specified size (e.g. 512\*512)
 
-# clip_image.py
+# clip_image_rasterio.py
 
 # 3. Once both drone imagery and index are clipped to tiles, move them from seperate state/year folder to a state/image folder for further use
 

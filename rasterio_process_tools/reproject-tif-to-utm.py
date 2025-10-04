@@ -117,11 +117,16 @@ def main(input_root, output_root):
     end_time = time.time()
     elapsed_time = end_time - start_time
 
-    print(f"\n✅ Processing completed in {elapsed_time:.2f} seconds!")
+    # Convert to hours, minutes, seconds
+    hours, remainder = divmod(int(elapsed_time), 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    print(f"\n✅ Processing completed in {hours} hours {minutes} minutes {seconds} seconds!")
+
 
 # Example usage
 if __name__ == "__main__":
-    input_directory = r"D:\Eelgrass_Classified_from_Metashape\Alaska"  
-    output_directory = r"D:\Eelgrass_Classified_from_Metashape\UTM\Alaska"  
+    input_directory = r"D:\Eelgrass_Classified_from_Metashape\Washington"  
+    output_directory = r"D:\Eelgrass_Classified_from_Metashape\UTM\Washington"  
 
     main(input_directory, output_directory)
