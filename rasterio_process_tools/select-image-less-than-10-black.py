@@ -94,10 +94,10 @@ def process_images():
 
 if __name__ == "__main__":
     # Hardcoded paths
-    INPUT_PATH = r"D:\Eelgrass_processed_images_2025\ModelData\Data"
-    OUTPUT_FOLDER = r"D:\Eelgrass_processed_images_2025\ModelData\image"
-    STATES = ["Alaska"]  # Define states
-    YEARS = ["2020"]  # Define years
+    INPUT_PATH = r"D:\Eelgrass_processed_images_2025\ModelData\Data_clipped_by_sites"
+    OUTPUT_FOLDER = r"D:\Eelgrass_processed_images_2025\ModelData\Data_for_modeling"
+    STATES = ["Washington"]  # Define states
+    YEARS = ["2024"]  # Define years
     threshold = 0.1  # over 10% non-black and non-white pixels
 
     process_images()

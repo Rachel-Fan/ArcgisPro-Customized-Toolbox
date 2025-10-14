@@ -126,7 +126,7 @@ def main(input_root, output_root):
 
 # Example usage
 if __name__ == "__main__":
-    input_directory = r"D:\Eelgrass_Classified_from_Metashape\Washington"  
-    output_directory = r"D:\Eelgrass_Classified_from_Metashape\UTM\Washington"  
+    input_directory = r"D:\Eelgrass_Classified_from_Metashape\BC"  
+    output_directory = r"D:\Eelgrass_Classified_from_Metashape\UTM\BC"  
 
     main(input_directory, output_directory)

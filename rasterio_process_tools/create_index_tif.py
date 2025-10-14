@@ -95,19 +95,25 @@ import time
 
 if __name__ == "__main__":
     start_time = time.time()
-    base_folder = r"D:\Eelgrass_Classified_from_Metashape\UTM\Washington"
-    years = ["2019", "2020", "2021", "2022", "2024"]  # List of years to process
 
-    for year in years:
-        for folder in os.listdir(base_folder):
-            input_folder = os.path.join(base_folder, folder, year)
-            output_folder = os.path.join(
-                r"D:\Eelgrass_processed_images_2025\ModelData\Alaska_0310_reproj", year
-            )
+    regions = ["BC"]  
+    years = ["2019", "2020", "2021", "2022", "2024"]
 
-            if os.path.isdir(input_folder):
-                print(f"Processing {input_folder} for year {year}")
-                main(input_folder, output_folder, year)
+    for region in regions:
+        base_folder = fr"D:\Eelgrass_Classified_from_Metashape\UTM\{region}"
+        for year in years:
+            # Each site folder inside region
+            for folder in os.listdir(base_folder):
+                input_folder = os.path.join(base_folder, folder, year)
+                output_folder = os.path.join(
+                    fr"D:\Eelgrass_processed_images_2025\ModelData\Index_tif\{region}", year
+                )
+
+                if os.path.isdir(input_folder):
+                    os.makedirs(output_folder, exist_ok=True)
+                    print(f"Processing {input_folder} for year {year}")
+                    main(input_folder, output_folder, year)
+
 
     end_time = time.time()
     print("All specified index rasters for all years are created.")

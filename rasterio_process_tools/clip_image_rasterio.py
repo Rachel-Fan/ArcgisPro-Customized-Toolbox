@@ -56,6 +56,7 @@ def clip_image(input_image_path, output_folder, tile_size=512, multiply=False):
 def main(input_folder, index_folder, output_folder):
     os.makedirs(output_folder, exist_ok=True)
 
+    '''
     # 处理航拍影像（每个年份下面通常只有 1 个 tif）
     if os.path.exists(input_folder):
         for input_image_file in os.listdir(input_folder):
@@ -67,7 +68,8 @@ def main(input_folder, index_folder, output_folder):
                 clip_image(input_image_path, image_output_folder)
                 print(f"{input_image_file} - Drone image has been extracted.")
                 print('**********************************')
-
+    '''
+    
     # 处理指数图（如果存在）
     if os.path.exists(index_folder):
         for index_image_file in os.listdir(index_folder):
@@ -86,7 +88,7 @@ if __name__ == "__main__":
 
     # ====== 这里设置你的新的“区域主文件夹”（其下直接是多个 site 子文件夹）======
     # 例如：D:\Eelgrass_Classified_from_Metashape\UTM\Alaska
-    region_root = r"D:\Eelgrass_Classified_from_Metashape\UTM\Washington"
+    region_root = r"D:\Eelgrass_Classified_from_Metashape\UTM\BC"
     years = ["2019", "2020", "2021", "2022", "2024"]
 
     # 自动取区域名（用于拼接输出与 index 路径）
@@ -108,14 +110,14 @@ if __name__ == "__main__":
             # 新结构：{region_root}\{site}\{year}\*.tif
             input_folder = os.path.join(site_path, year)
 
-            # 指数图（如果存在）：D:\Eelgrass_processed_images_2025\ModelData\{region}\{site}\{year}\index_tif
+            # 指数图（如果存在）：D:\Eelgrass_processed_images_2025\Index_tif\{region}\year}\index_tif
             index_folder = os.path.join(
-                r"D:\Eelgrass_processed_images_2025\ModelData\Washington_Index", year, "index_tif"
+                r"D:\Eelgrass_processed_images_2025\Index_tif\BC", year, "index_tif"
             )
 
-            # 输出：D:\Eelgrass_processed_images_2025\ModelData\Data\{region}\{year}
+            # 输出：D:\Eelgrass_processed_images_2025\ModelData\Data_clipped_by_sites\{region}\{year}
             output_folder = os.path.join(
-                r"D:\Eelgrass_processed_images_2025", "ModelData", "Data", region_name, year
+                r"D:\Eelgrass_processed_images_2025", "ModelData", "Data_clipped_by_sites", region_name, year
             )
 
             # 该年份文件夹必须存在且至少包含一个 tif

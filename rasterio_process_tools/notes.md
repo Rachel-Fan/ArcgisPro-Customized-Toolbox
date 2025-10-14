@@ -23,3 +23,11 @@
 # 5. clip_image_rasterio.py
 
 ## use rasterio instead of opencv or pil, to handle large scale raster tif.
+
+# 6. select-image-less-than-10-black.py
+
+## filter the all black/over 90% black pixel image to clean up the dataset
+
+# 7. copy-same-name-index.py
+
+## copy the matching index with same name as the images filtered in step 6

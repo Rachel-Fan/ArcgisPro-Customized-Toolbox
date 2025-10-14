@@ -14,5 +14,5 @@ def rename_double_png(folder):
 
 if __name__ == "__main__":
     # Replace with your actual folder path in WSL (you can use relative or absolute path)
-    folder_path = r"\\wsl.localhost\Ubuntu\home\geofly\sam-hq\train\pa-sam-ggb\Alaska-2025\visualize-0522"
+    folder_path = r"D:\Eelgrass_processed_images_2025\Trained\image"
     rename_double_png(folder_path)

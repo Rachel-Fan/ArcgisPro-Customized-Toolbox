@@ -47,9 +47,9 @@ def main(folder1_path, folder2_path, folder3_path):
 
 if __name__ == "__main__":
     print('Start')
-    folder1_path = r"D:\Eelgrass_processed_images_2025\ModelData\image\Alaska\image" # folder of file names read from
-    folder2_path = r"D:\Eelgrass_processed_images_2025\ModelData\Data\Alaska" # folder we copy from
-    folder3_path = r"D:\Eelgrass_processed_images_2025\ModelData\image\Alaska\index" # folder we copy to
+    folder1_path = r"D:\Eelgrass_processed_images_2025\ModelData\Data_for_modeling\Washington\image" # folder of file names read from
+    folder2_path = r"D:\Eelgrass_processed_images_2025\ModelData\Data_clipped_by_sites\Washington" # folder we copy from
+    folder3_path = r"D:\Eelgrass_processed_images_2025\ModelData\Data_for_modeling\Wanshington\index" # folder we copy to
     
     print('Start selecting')
     main(folder1_path, folder2_path, folder3_path)

@@ -20,5 +20,5 @@ def unzip_all_in_folder(input_folder):
                     print(f"❌ Failed to extract {zip_path}: {e}")
 
 if __name__ == "__main__":
-    input_folder = r"D:\Eelgrass_Classified_from_Metashape\Washington"  # 🔁 change to your folder
+    input_folder = r"D:\Eelgrass_Classified_from_Metashape\BC"  # 🔁 change to your folder
     unzip_all_in_folder(input_folder)
