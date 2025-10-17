@@ -85,7 +85,7 @@ def rename_folders_and_files(input_folder):
 
 if __name__ == "__main__":
     print('Rename started')
-    input_folder = r'D:\Eelgrass_Classified_from_Metashape\Washington'  # Replace with the actual path to your input folder
+    input_folder = r'E:\Eelgrass_Classified_from_Metashape\BB_Xiangyu_Shp_GR'  # Replace with the actual path to your input folder
     
     rename_folders_and_files(input_folder)
     print('Rename done')
